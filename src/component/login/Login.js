@@ -76,6 +76,7 @@ function Login(props) {
                             name='name'
                             value={valueLogin.name}
                             onChange={onHandleChange}
+                            required
                         />
                     </label>
                 </div>
@@ -87,6 +88,7 @@ function Login(props) {
                             name='numberPhone'
                             value={valueLogin.numberPhone}
                             onChange={onHandleChange}
+                            required
                         />
                     </label>
                 </div>
@@ -98,6 +100,7 @@ function Login(props) {
                             name='department'
                             value={valueLogin.department}
                             onChange={onHandleChange}
+                            required
                         >
                         {
                             listRoom

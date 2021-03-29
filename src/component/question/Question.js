@@ -15,7 +15,7 @@ function getName(fullname) {
 // code function here
 function Question(props) {
     // get props
-    const { user } = props;
+    const { user, order } = props;
 
 
     // return ui
@@ -30,12 +30,22 @@ function Question(props) {
                 <div className='question__body__anwser'>
                     <button type='button'
                         className='question__body__anwser__btn question__body__anwser__btn--success'
+                        onClick={
+                            () => {
+                                order(1)
+                            }
+                        }
                     >
                         Tất nhiên là có rồi!
                     </button>
 
                     <button type='button'
                         className='question__body__anwser__btn question__body__anwser__btn--danger'
+                        onClick={
+                            () => {
+                                order(-1)
+                            }
+                        }
                     >
                         Mai mình đem theo cơm rồi!
                     </button>
