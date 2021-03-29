@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import  Login from './component/login/Login';
+import Login from './component/login/Login';
+import Question from './component/question/Question';
 
 function App() {
     // declare state 
@@ -35,6 +36,12 @@ function App() {
         localStorage.setItem('user',JSON.stringify(user));
     }
 
+    // handle when order lunch
+    var onOrder = () => {
+        
+    }
+
+
     // return component
     var componentsUI = () => {
         if (presentUser.id.trim() === '') {
@@ -46,7 +53,9 @@ function App() {
             )
         }else {
             return (
-                <div></div>
+                <Question 
+                    user={presentUser}
+                />
             )     
         }
     }
