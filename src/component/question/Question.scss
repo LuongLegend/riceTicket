@@ -1,0 +1,87 @@
+// import variable style
+@import '../../variables/Variables.scss';
+
+// style for function
+.question {
+    width: 50%;
+    background-color: $color-background;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%) translateZ(0);
+    padding: 20px;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 5px 1px $color-shadow;
+    text-align: center;
+
+    &__head {
+        img {
+            width: 15%;
+        }
+    
+        h2 {
+            font-weight: $font-weight-400;
+            padding-bottom: 15px;
+        }
+    }
+
+    &__body {
+        p {
+            padding-bottom: 15px;
+        }
+
+        &__anwser {
+            &__btn {
+                padding: 0.375rem 0.75rem;
+                border-radius: 0.25rem;
+                border: 1px solid transparent;
+                font-size: $font-size-14;
+                color: $color-background;
+
+                &--success {
+                    background-color: $color-success;
+                    margin-right: 15px;
+                }
+                &--danger {
+                    background-color: $color-danger;
+                }
+            }
+        }
+    }
+    
+}
+
+@media only screen and (max-width: 992px) {
+    .question {
+        width: 55%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .question {
+        width: 65%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .question {
+        width: 75%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .question {
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 410px) {
+    .question {
+        &__body {
+            &__anwser {
+                &__btn {
+                    &--success {
+                        margin-right: 0;
+                        margin-bottom: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
