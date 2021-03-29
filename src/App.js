@@ -1,14 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
+import  Login from './component/login/Login';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-          book rice Ticket
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <Login/>
+        </>
+    );
 }
 
 export default App;
