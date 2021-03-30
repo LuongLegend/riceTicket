@@ -8,8 +8,18 @@ export const writeData = (userId, value) => {
     });
 }
 export const readUsers = () => {
-   	return db.ref('users').get();
-  
+	return db.ref('users').get();
 }
 
+
+export const writeOrders = (orderId, value) => {
+    db.ref('orders/' + orderId).set({
+		idUser: value.id,
+		date: JSON.stringify(value.date),
+		status: value.status
+    });
+}
+export const readOrders = () => {
+	return db.ref('orders').get();
+}
 
