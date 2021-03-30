@@ -15,8 +15,27 @@ function getName(fullname) {
 // code function here
 function Question(props) {
     // get props
-    const { user, order } = props;
+    const {user, order, isOrder, onHandleChangeOrder} = props;
 
+    // handle when order
+    var onOrder = () => {
+        let confirm = window.confirm('Bạn xác nhận lại giúp mình nhé?');
+        
+        if (confirm) {
+            order(1);
+            onHandleChangeOrder()
+        }
+    }
+
+    // handle when change order
+    var onCancelOrder = () => {
+        let confirm = window.confirm('Bạn xác nhận lại giúp mình nhé?');
+        
+        if (confirm) {
+            order(-1);
+            onHandleChangeOrder()
+        }
+    }
 
     // return ui
     return (
@@ -26,28 +45,41 @@ function Question(props) {
                 <h2>Xin chào, {getName(user.name)}</h2>
             </div>
             <div className='question__body'>
-                <p>Bạn có muốn đặt cơm ngày mai không?</p>
-                <div className='question__body__anwser'>
+                <p>Mình giúp được gì cho bạn?</p>
+                <div className='question__body__answer'>
                     <button type='button'
-                        className='question__body__anwser__btn question__body__anwser__btn--success'
-                        onClick={
-                            () => {
-                                order(1)
-                            }
-                        }
+                        className='question__body__answer__btn'
                     >
-                        Tất nhiên là có rồi!
+                        Chia sẻ vé cơm
                     </button>
 
                     <button type='button'
-                        className='question__body__anwser__btn question__body__anwser__btn--danger'
-                        onClick={
-                            () => {
-                                order(-1)
-                            }
-                        }
+                        className='question__body__answer__btn'
                     >
-                        Mai mình đem theo cơm rồi!
+                        Nhận vé cơm
+                    </button>
+
+                    {
+                        isOrder?
+                        <button type='button'
+                            className='question__body__answer__btn question__body__answer__btn__danger'
+                            onClick={onCancelOrder}
+                        >
+                            Huỷ vé cơm
+                        </button>:
+                        <button type='button'
+                            className='question__body__answer__btn'
+                            onClick={onOrder}
+                        >
+                            Đặt vé cơm
+                        </button>
+                        
+                    }
+
+                    <button type='button'
+                        className='question__body__answer__btn'
+                    >
+                        Xem số lượng
                     </button>
                 </div>
             </div>
