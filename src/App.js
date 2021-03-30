@@ -3,6 +3,7 @@ import './App.css';
 import Login from './component/login/Login';
 import Question from './component/question/Question';
 import Status from './component/status/Status';
+import * as Firebase from './utils/CallFirebase';
 
 function getFullDate(date) {
     let result = '';
@@ -49,7 +50,8 @@ function App() {
         department: 1
     });
     const [orders, setOrders] = useState([]);
-    
+    const [users, setUsers] = useState([]);
+
     // load user from local Storage
     useEffect(
         () => {
@@ -61,16 +63,39 @@ function App() {
                     numberPhone: '',
                     department: 1
                 };
-            
-            let orders = JSON.parse(localStorage.getItem('orders'))?
+                let orders = JSON.parse(localStorage.getItem('orders'))?
                 JSON.parse(localStorage.getItem('orders')):
                 [];
-            setPresentUser({...user});
-            setOrders([...orders]);
+                setPresentUser({...user});
+                setOrders([...orders]);
+
+                
+                Firebase.readUsers().then(snapshot => {
+                    let result = []
+                    if (snapshot.exists()) {
+                        snapshot.forEach(element => {
+                            result.push(
+                                {
+                                    id: element.key,
+                                    name: element.val().name,
+                                    numberPhone: element.val().numberPhone,
+                                    department: element.val().department
+                                }
+                            )
+                        })
+                        setUsers([...result]);
+                    }
+                    else {
+                      console.log("No data available");
+                    }
+                  }
+                ).catch(function(error) {
+                    console.error(error);
+                    }
+                );
         },[]
     )
 
-    
     // handle when complete input user
     const onSetUser = user => {
         setPresentUser({
@@ -114,6 +139,7 @@ function App() {
             return (
                 <Login 
                     setUser={onSetUser}
+                    users={users}
                 />
             )
         }

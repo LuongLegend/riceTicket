@@ -2,6 +2,7 @@
 import './Login.scss';
 import { rooms } from '../../constands/RoomMap';
 import { useState } from 'react';
+import * as Firebase from '../../utils/CallFirebase';
 
 // create UUID
 function createUUID() {
@@ -19,10 +20,30 @@ function createUUID() {
     return uuid;
 }
 
+function isDuplicateNumber(users, numberPhone) {
+    let result = false;
+
+    users.forEach(element => {
+        if ((element.numberPhone+'').trim() === (numberPhone+'').trim()) result = true;
+    });
+
+    return result;
+}
+
+function findUser(users, numberPhone) {
+    let result = {};
+
+    users.forEach(element => {
+        if ((element.numberPhone+'').trim() === (numberPhone+'').trim()) result = {...element};
+    });
+
+    return result;
+}
+
 // code function here
 function Login(props) {
     // get props
-    const { setUser } = props;
+    const { setUser, users } = props;
 
     // delcare state
     const [valueLogin, setValueLogin] = useState(
@@ -33,9 +54,10 @@ function Login(props) {
             department: 1
         }
     )
+    const [recover, setRecover] = useState(false);
 
     // handle when change value
-    var onHandleChange = event => {
+    const onHandleChange = event => {
         const value = event.target.value;
         const name= event.target.name;
 
@@ -46,16 +68,37 @@ function Login(props) {
     }
 
     // handle when submit form 
-    var onHandleSubmit = event => {
+    const onHandleSubmit = event => {
         event.preventDefault();
-        setUser({
+         
+        if (recover&&!isDuplicateNumber(users,valueLogin.numberPhone)){
+            alert('Mình không biết số điện thoại này!');
+            return setRecover(false);
+        }
+        if (!recover&&isDuplicateNumber(users,valueLogin.numberPhone)){
+            alert('Số điện thoại này quen quá!');
+            return  setRecover(true);
+        }
+
+        if (recover) {
+            return setUser(findUser(users,valueLogin.numberPhone));
+        }
+
+
+        let newId = createUUID();
+        let newValueLogin = {
             ...valueLogin,
-            id: createUUID()
-        })
+            id: newId
+        };
+
+        Firebase.writeData(newId,newValueLogin)
+
+        setUser(newValueLogin);
+
     }
 
     // return ui room
-    var listRoom = rooms.map(
+    const listRoom = rooms.map(
         (element, index) => {
             return (
                 <option key={index} value={element.id}>{element.title}</option>
@@ -63,11 +106,10 @@ function Login(props) {
         }
     )
 
-    // return ui
-    return (
-        <div className="login">
-            <h2>Cho tôi biết bạn là ai được không?</h2>
-            <form action="" method="" onSubmit={onHandleSubmit}>
+    // return ui login 
+    const loginUI = () => {
+        return (
+            <>
                 <div className='form-group'>
                     <label>
                         <p>Tên</p>
@@ -108,11 +150,56 @@ function Login(props) {
                         </select>
                     </label>
                 </div>
-                
+            </>
+        )
+    }
+
+    // return recover login 
+    const recoverUI = () => {
+        return (
+            <>
+                <div className='form-group'>
+                    <label>
+                        <p>Số điện thoại</p>
+                        <input 
+                            className='form-control'
+                            name='numberPhone'
+                            value={valueLogin.numberPhone}
+                            onChange={onHandleChange}
+                            required
+                        />
+                    </label>
+                </div>
+            </>
+        )
+    }
+
+    // change UI mode
+    const onUIChange = () => {
+        setRecover(!recover);
+    }
+
+    // return ui
+    return (
+        <div className="login">
+            <h2>Cho tôi biết bạn là ai được không?</h2>
+            <form action="" method="" onSubmit={onHandleSubmit}>
+                {
+                    recover?
+                    recoverUI():
+                    loginUI()
+                }
                 <button type='submit'
                     className='form-submit'
                 >Tiếp</button>
             </form>
+            <u onClick={onUIChange}>
+                {
+                    recover?
+                    'Chúng mình chưa từng gặp nhau?':
+                    'Chúng mình từng gặp nhau?'
+                }
+            </u>
         </div>
     )
 }
