@@ -1,6 +1,6 @@
 // import library
 import './Login.scss';
-import { rooms } from '../../constands/RoomMap';
+import { rooms } from '../../constants/RoomMap';
 import { useState } from 'react';
 import * as Firebase from '../../utils/CallFirebase';
 
