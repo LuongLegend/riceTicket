@@ -12,9 +12,9 @@ export const readUsers = () => {
 }
 
 
-export const writeOrders = (orderId, value) => {
-    db.ref('orders/' + orderId).set({
-		idUser: value.id,
+export const writeOrders = (value) => {
+    db.ref('orders/' + value.idOrder).set({
+		idUser: value.idUser,
 		date: JSON.stringify(value.date),
 		status: value.status
     });
