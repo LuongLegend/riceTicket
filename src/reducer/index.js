@@ -1,16 +1,24 @@
-import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-
-import order from './order'
-import user from './user'
+import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import users from './Users';
+import orders from './Orders';
+import presentUser from './PresentUser';
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['user','order']
+    whitelist: [
+        'users',
+        'orders',
+        'presentUser'
+    ]
 }
 
-const rootReducer = combineReducers({order, user});
+const rootReducer = combineReducers({
+    orders, 
+    presentUser,
+    users
+});
 
 export default persistReducer(persistConfig, rootReducer);

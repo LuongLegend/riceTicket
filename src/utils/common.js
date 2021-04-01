@@ -1,4 +1,5 @@
-export const  createUUID = () => {
+// create UUID
+export const createUUID = () => {
     // http://www.ietf.org/rfc/rfc4122.txt
     var s = [];
     var hexDigits = "0123456789abcdef";
@@ -12,3 +13,13 @@ export const  createUUID = () => {
     var uuid = s.join("");
     return uuid;
 }
+
+// export datetime to format mm/MM/yyyy
+export const getFullDate = date => {
+    let result = '';
+
+    result = '' + date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+
+    return result;
+}
+

@@ -9,11 +9,11 @@ import { store, persistor } from './store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate persistor={persistor}>
+    {/* <PersistGate persistor={persistor}> */}
       <React.StrictMode>
         <App />
       </React.StrictMode>
-    </PersistGate>
+    {/* </PersistGate> */}
   </Provider>,
   document.getElementById('root')
 );

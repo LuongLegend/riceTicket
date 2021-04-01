@@ -3,39 +3,19 @@ import './App.css';
 import Login from './component/login/Login';
 import Question from './component/question/Question';
 import * as Firebase from './utils/CallFirebase';
+import * as Common from './utils/common';
 
-// create UUID
-function createUUID() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    var s = [];
-    var hexDigits = "0123456789abcdef";
-    for (var i = 0; i < 36; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = "-";
-    
-    var uuid = s.join("");
-    return uuid;
-}
-
-function getFullDate(date) {
-    let result = '';
-
-    result = '' + date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
-
-    return result;
-}
-
-
+// check order is define?
 function isExistOrder(orders, id) {
     let result = false;
 
     orders.forEach(element => {
         let parseDate = new Date(element.date);
 
-        if (element.status===1&&element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
+        if (
+                element.status===1&&element.idUser === id && 
+                Common.getFullDate(parseDate) === Common.getFullDate(new Date())
+        ) {
             result = true;
         }
     });
@@ -43,14 +23,14 @@ function isExistOrder(orders, id) {
     return result;    
 }
 
-
+// get order from list order
 function getOrder (orders, id) {
     let result = -1;
 
     orders.forEach((element,index) => {
         let parseDate = new Date(element.date);
 
-        if (element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
+        if (element.idUser === id && Common.getFullDate(parseDate) === Common.getFullDate(new Date())) {
             result = index;
         }
     });
@@ -74,15 +54,20 @@ function App() {
     useEffect(
         () => {
             // get user present
-                let user = JSON.parse(localStorage.getItem('user'))?
-                JSON.parse(localStorage.getItem('user')):
-                {
-                    id: '',
-                    name: '',
-                    numberPhone: '',
-                    department: 1
-                };
-                setPresentUser({...user});
+            let user = JSON.parse(localStorage.getItem('user'))?
+            JSON.parse(localStorage.getItem('user')):
+            {
+                id: '',
+                name: '',
+                numberPhone: '',
+                department: 1
+            };
+            setPresentUser({...user});
+        },[]
+    )
+    
+    useEffect(
+        () => {
 
                 // get all user
                 Firebase.readUsers().then(snapshot => {
@@ -133,7 +118,7 @@ function App() {
                     console.error(error);
                     }
                 );
-        },[]
+        },[presentUser]
     )
 
     // load status order
@@ -165,7 +150,7 @@ function App() {
 
         if (index===-1) {
             let newOrder = {
-                idOrder: createUUID(),
+                idOrder: Common.createUUID(),
                 idUser: presentUser.id,
                 date: new Date(),
                 status: status

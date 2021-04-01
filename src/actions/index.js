@@ -1,19 +1,16 @@
-import {
-    GET_ORDER, 
-    GET_USER
-} from '../constants/ActionTypes';
+import * as Types from '../constants/ActionTypes';
 
 //order
-export const getOrder = (order) => {
+export const getOrder = orders => {
     return {
-        type: GET_ORDER,
-        data: order
+        type: Types.GET_ORDER,
+        payload: orders
     }
 }
 //user
-export const getUser = (user) => {
+export const getPresentUser = presentUser => {
     return {
-        type: GET_USER,
-        data: user
+        type: Types.GET_PRESENT_USER,
+        payload: presentUser
     }
 }
