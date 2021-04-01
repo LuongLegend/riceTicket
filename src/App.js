@@ -35,7 +35,7 @@ function isExistOrder(orders, id) {
     orders.forEach(element => {
         let parseDate = new Date(element.date);
 
-        if (element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
+        if (element.status===1&&element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
             result = true;
         }
     });
@@ -161,36 +161,32 @@ function App() {
         let ordersCopy = [...orders];
         let index = getOrder(orders,presentUser.id);
 
+        console.log(index);
+
         if (index===-1) {
             let newOrder = {
-                id: presentUser.id,
+                idOrder: createUUID(),
+                idUser: presentUser.id,
                 date: new Date(),
                 status: status
             }
             ordersCopy.push(newOrder);
 
-            Firebase.writeOrders(createUUID(),newOrder)
+            Firebase.writeOrders(newOrder)
         }else{
+            
             let newOrder = {
                 ...ordersCopy[index],
                 status: status
             };
             ordersCopy[index] =  newOrder;
 
-            let idOrder = newOrder.idOrder;
-            let infoOrder = {
-                id: newOrder.idUser,
-                date: newOrder.date,
-                status: newOrder.status
-            };
-            console.log(idOrder);
-            Firebase.writeOrders(idOrder,infoOrder);
+            Firebase.writeOrders(newOrder);
         }
 
         setOrders([...ordersCopy]);
     }
 
-console.log(orders);
     // change order
     var onHandleChangeOrder = () => {
         setIsOrder(!isOrder);
