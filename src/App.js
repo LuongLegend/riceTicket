@@ -35,7 +35,7 @@ function isExistOrder(orders, id) {
     orders.forEach(element => {
         let parseDate = new Date(element.date);
 
-        if (element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
+        if (element.status===1&&element.idUser === id && getFullDate(parseDate) === getFullDate(new Date())) {
             result = true;
         }
     });
